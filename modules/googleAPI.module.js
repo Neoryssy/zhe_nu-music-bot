@@ -12,6 +12,8 @@ class GoogleAPI {
       )}`
     )
 
+    // console.log(res)
+
     return res
   }
 }

@@ -17,7 +17,8 @@ for (const file of commandFiles) {
 
 client.once('ready', async () => {
   if (process.env.NODE_ENV === 'development') {
-    console.log(colors.cyan.underline('\n\n\n\n\nBot has been successfully started'));
+    console.log(colors.cyan.underline('\n\nBot has been successfully started'));
+    console.log(colors.cyan.underline(`Invite link: ${await client.generateInvite({permissions: 8})}`));
   }
 });
 

@@ -20,9 +20,11 @@ module.exports = {
     } catch (error) {
       const embed = new Discord.MessageEmbed()
         .setColor('RED')
-        .setDescription(`Ошибка при воспроизведении`);
+        .setDescription(`Ошибка при воспроизведения`);
 
       await message.channel.send({ embed });
+
+      console.log(error)
     }
   },
 };

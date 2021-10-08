@@ -36,7 +36,7 @@ class MusicSubscription {
 
       return song;
     } catch (error) {
-      throw new Error('1');
+      throw new Error(error);
     }
   }
 
@@ -80,6 +80,7 @@ class MusicSubscription {
     });
 
     serverQueue.player = player;
+    serverQueue.volume = 1;
   }
 
   createServerQueue(guildId) {
@@ -159,16 +160,17 @@ class MusicSubscription {
     if (!song) return;
 
     const stream = ytdl(song.url, { filter: 'audioonly' });
-    const resource = createAudioResource(stream);
+
+    const resource = createAudioResource(stream, { inlineVolume: true });
+    resource.volume.setVolume(serverQueue.volume);
+
+    serverQueue.resource = resource;
 
     this.createPlayer(guildId);
 
     serverQueue.connection.subscribe(serverQueue.player);
 
-    serverQueue.player.play(resource);
-
-    console.log(serverQueue.songs);
-    console.log(serverQueue.loopQueue);
+    serverQueue.player.play(serverQueue.resource);
   }
 
   resume(guildId) {
@@ -178,6 +180,13 @@ class MusicSubscription {
     if (!serverQueue?.player) return;
 
     serverQueue.player.unpause();
+  }
+
+  setVoume(guildId, volume) {
+    const serverQueue = this.queue.get(guildId);
+
+    serverQueue.volume = volume;
+    serverQueue.resource.volume.setVolume(volume);
   }
 
   stop(guildId) {

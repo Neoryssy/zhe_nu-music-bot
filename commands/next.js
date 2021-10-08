@@ -2,6 +2,7 @@ const Discord = require('discord.js')
 const musicSubscription = require('./modules/subscription')
 
 module.exports = {
+  alias: ['skip'],
   args: false,
   name: 'next',
   description: 'next music',
