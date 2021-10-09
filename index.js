@@ -3,22 +3,27 @@ const path = require('path');
 const dotenv = require('dotenv').config();
 const colors = require('colors');
 const { prefix } = require('./config.json');
-const Discord = require('discord.js');
-const client = new Discord.Client();
+const { Client, Intents } = require('discord.js');
+const { events } = require('./events');
 
-client.commands = new Map()
+const intents = new Intents();
+intents.add(Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES);
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const client = new Client();
+client.commands = new Map();
+events(client);
+
+const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.name, command);
 }
 
 client.once('ready', async () => {
   if (process.env.NODE_ENV === 'development') {
     console.log(colors.cyan.underline('\n\nBot has been successfully started'));
-    console.log(colors.cyan.underline(`Invite link: ${await client.generateInvite({permissions: 8})}`));
+    console.log(colors.cyan.underline(`Invite link: ${await client.generateInvite({ permissions: 8 })}`));
   }
 });
 
