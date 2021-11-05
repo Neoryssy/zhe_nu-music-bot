@@ -12,7 +12,7 @@ const httpModule = () => {
         headers: options.headers || {},
       })
 
-      if (!res.ok) throw new Error(`Request error`)
+      if (!res.ok) throw new Error('Request error')
 
       return res.json()
     } catch (e) {

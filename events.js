@@ -1,4 +1,4 @@
-const musicSubscription = require('./commands/modules/subscription');
+
 const { AudioPlayerStatus } = require('@discordjs/voice');
 
 module.exports.clientEvents = (client) => {

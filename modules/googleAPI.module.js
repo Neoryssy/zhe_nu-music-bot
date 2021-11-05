@@ -1,21 +1,22 @@
-const { request } = require('./http.module')
+const { request } = require('./http.module');
 
 class GoogleAPI {
   constructor() {
-    this.youtubeSearchURI = 'https://youtube.googleapis.com/youtube/v3/search'
+    this._API_KEY = process.env.GOOGLE_API_KEY;
+    this._youtubeSearchURI = 'https://youtube.googleapis.com/youtube/v3/search';
   }
 
-  async yotubeDataAPI({ youtubeAPIKey, query }) {
+  async youtubeSearchVideo(query) {
     const res = await request(
-      `${this.youtubeSearchURI}${encodeURI(
-        `?part=snippet&maxResults=1&q=${query}&key=${youtubeAPIKey}`//todo
+      `${this._youtubeSearchURI}${encodeURI(
+        `?part=snippet&q=${query}&type=video&type=playlist&key=${this._API_KEY}`
       )}`
-    )
+    );
 
-    // console.log(res)
+    console.log(res)
 
-    return res
+    return res;
   }
 }
 
-module.exports = new GoogleAPI()
+module.exports = GoogleAPI;
