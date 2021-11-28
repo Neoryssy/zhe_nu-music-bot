@@ -53,14 +53,12 @@ export const clientEvents = (client: MusicBot) => {
   });
 
   client.once('ready', async () => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('\n\nBot has been successfully started');
-      console.log(
-        `Invite link: ${await client.generateInvite({
-          permissions: 'ADMINISTRATOR',
-          scopes: ['bot'],
-        })}`
-      );
-    }
+    console.log('\n\nBot has been successfully started');
+    console.log(
+      `Invite link: ${await client.generateInvite({
+        permissions: 'ADMINISTRATOR',
+        scopes: ['bot'],
+      })}`
+    );
   });
 };
