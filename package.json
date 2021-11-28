@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "start": "cross-env NODE_ENV=production node index.js"
+    "build": "rimraf build/ && tsc",
+    "dev": "cross-env NODE_ENV=development nodemon index.ts",
+    "start": "cross-env NODE_ENV=production node build/index.js"
   },
   "author": "",
   "license": "ISC",
