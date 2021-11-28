@@ -7,13 +7,23 @@ npm run build
 ```
 
 ## Предварительная настройка
+
 Перед запуском необходимо в корневой папке создать файл **.env** следующего содержания:
+
+##### .env
 ```
 DISCORD_TOKEN=ТОКЕН
 GOOGLE_API_KEY=КЛЮЧ
 ```
 Discord token можно получить в [Discord Developer Portal](https://discord.com/developers/applications).
 Google API key можно получить в [консоли Google Cloud](https://cloud.google.com/) 
+
+##### config.json
+```
+deleteEmbedMessage: (boolean) -  Нужно ли удалять встраиваемые сообщения
+messageDeleteTimeout: (number) - Время, через которое будут удалены встраиваемые сообщения (в милисекундах)
+prefix: (string) - Префикс для команд
+```
 
 ## Запуск
 ```
