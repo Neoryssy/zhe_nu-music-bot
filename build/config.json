@@ -1,0 +1,5 @@
+{
+    "deleteEmbedMessage": true,
+    "messageDeleteTimeout": 600000,
+    "prefix": "."
+}
