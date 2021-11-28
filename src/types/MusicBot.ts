@@ -2,7 +2,7 @@ import fs from 'fs';
 import { Client, ClientOptions, Message, Snowflake } from 'discord.js';
 import { Subscription } from './Subscription';
 import { rootDir } from '../../index';
-import path from 'path/posix';
+import path from 'path';
 import { GuildCommand } from './Command';
 
 export class MusicBot extends Client {
