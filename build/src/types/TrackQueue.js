@@ -104,7 +104,7 @@ class TrackQueue {
     remove(position) {
         if (position < 0 || position > this._list.length - 1)
             return;
-        this._list.splice(position, 1);
+        this._list.splice(position + 1, 1);
     }
 }
 exports.TrackQueue = TrackQueue;
