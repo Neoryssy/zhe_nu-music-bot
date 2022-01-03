@@ -2,6 +2,17 @@ import { MessageEmbed } from 'discord.js';
 import { ExecuteOptions, GuildCommand } from '../types/Command';
 import { prefix } from '../../config.json';
 
+const msToISO = (t: number) => {
+  let iso: string;
+  const hour = 3600_000;
+
+  if (t < 0) iso = '0:00';
+  else if (t < hour) iso = new Date(t).toISOString().substr(14, 5);
+  else if (t >= hour) iso = new Date(t).toISOString().substr(11, 8);
+
+  return iso!;
+};
+
 const e = async ({ subscription, message }: ExecuteOptions) => {
   const queue = [...subscription!.queue.queue];
   const embed = new MessageEmbed().setColor('BLUE');
@@ -9,16 +20,17 @@ const e = async ({ subscription, message }: ExecuteOptions) => {
 
   embed.setTitle(`Треков в очереди (${queue.length})`);
   if (subscription!.queue.current) {
-    let format: string;
+    let leftDuration: string;
 
-    if (subscription!.queue.current.lengthSeconds === 0) format = 'Live';
-    else if (subscription!.queue.current.lengthSeconds >= 3600)
-      format = new Date(subscription!.queue.current.lengthSeconds * 1000).toISOString().substr(11, 8);
-    else format = new Date(subscription!.queue.current.lengthSeconds * 1000).toISOString().substr(14, 5);
+    if (subscription!.queue.current.lengthSeconds === 0) leftDuration = 'Live';
+    else
+      leftDuration = msToISO(
+        subscription!.queue.current.lengthSeconds * 1000 - subscription!.resource.playbackDuration
+      );
 
     descriptionElements.push('**Сейчас играет**');
     descriptionElements.push(
-      `[${subscription!.queue.current.title}](${subscription!.queue.current.link})  \`${format}\``
+      `[${subscription!.queue.current.title}](${subscription!.queue.current.link})  \`${leftDuration}\``
     );
   }
 
@@ -35,13 +47,12 @@ const e = async ({ subscription, message }: ExecuteOptions) => {
     queue.forEach((t, i) => {
       if (i >= 10) return;
 
-      let format: string;
+      let leftDuration: string;
 
-      if (t.lengthSeconds === 0) format = 'Live';
-      else if (t.lengthSeconds >= 3600) format = new Date(t.lengthSeconds * 1000).toISOString().substr(11, 8);
-      else format = new Date(t.lengthSeconds * 1000).toISOString().substr(14, 5);
+      if (t.lengthSeconds === 0) leftDuration = 'Live';
+      else leftDuration = msToISO(t.lengthSeconds * 1000);
 
-      descriptionElements.push(`\`${i + 1}\` [${t.title}](${t.link}) \`${format}\``);
+      descriptionElements.push(`\`${i + 1}\` [${t.title}](${t.link}) \`${leftDuration}\``);
     });
   }
 
