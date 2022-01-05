@@ -46,6 +46,7 @@ exports.Track = Track;
 class TrackQueue {
     constructor() {
         this._list = [];
+        this._looped = false;
         this._position = -1;
     }
     get current() {
@@ -87,24 +88,36 @@ class TrackQueue {
             this._position = this._list.length;
         return this.current;
     }
+    loop() {
+        this._looped = true;
+    }
     next() {
         if (this._position === -1 && this._list.length === 0)
             return null;
         if (this._position === this._list.length)
             return null;
-        this._position++;
+        if (this._looped)
+            return this.current;
+        else
+            this._position++;
         return this.current;
     }
     previous() {
         if (this._position - 1 < 0)
             return null;
-        this._position--;
+        if (this._looped)
+            return this.current;
+        else
+            this._position--;
         return this._list[this._position];
     }
     remove(position) {
         if (position < 0 || position > this._list.length - 1)
             return;
         this._list.splice(position, 1);
+    }
+    unloop() {
+        this._looped = false;
     }
 }
 exports.TrackQueue = TrackQueue;
