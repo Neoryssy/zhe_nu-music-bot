@@ -1,5 +1,7 @@
 import { thumbnail } from 'ytdl-core';
 
+export type loopType = 'track' | 'queue';
+
 export interface PlaylistOptions {
   items: Track[];
   link: string;
@@ -70,6 +72,7 @@ export class Track {
 
 export class TrackQueue {
   private _list: Track[] = [];
+  private _looped: boolean = false;
   private _position: number = -1;
 
   get current() {
@@ -116,11 +119,16 @@ export class TrackQueue {
     return this.current;
   }
 
+  loop() {
+    this._looped = true;
+  }
+
   next(): Track | null {
     if (this._position === -1 && this._list.length === 0) return null;
     if (this._position === this._list.length) return null;
 
-    this._position++;
+    if (this._looped) return this.current;
+    else this._position++;
 
     return this.current;
   }
@@ -128,7 +136,8 @@ export class TrackQueue {
   previous(): Track | null {
     if (this._position - 1 < 0) return null;
 
-    this._position--;
+    if (this._looped) return this.current
+    else this._position--;
 
     return this._list[this._position];
   }
@@ -137,5 +146,9 @@ export class TrackQueue {
     if (position < 0 || position > this._list.length - 1) return;
 
     this._list.splice(position, 1);
+  }
+
+  unloop() {
+    this._looped = false;
   }
 }
