@@ -35,6 +35,7 @@ const e = async ({ subscription, message }: ExecuteOptions) => {
   }
 
   if (queue.length === 0) {
+    descriptionElements.push('');
     descriptionElements.push('`Нет треков в очереди`');
     descriptionElements.push('');
     descriptionElements.push(
