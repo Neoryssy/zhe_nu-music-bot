@@ -15,7 +15,7 @@ export class MessageSender {
 
   constructor(options: MessageSenderOptions) {
     this._channel = options.channel;
-    this._deletable = !!options.deletable && deleteEmbedMessage;
+    this._deletable = options.deletable === undefined ? deleteEmbedMessage : options.deletable;
     this._message = options.message;
     this._timeoutMS = messageDeleteTimeout;
   }

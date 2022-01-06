@@ -5,7 +5,7 @@ const config_json_1 = require("../../config.json");
 class MessageSender {
     constructor(options) {
         this._channel = options.channel;
-        this._deletable = !!options.deletable && config_json_1.deleteEmbedMessage;
+        this._deletable = options.deletable === undefined ? config_json_1.deleteEmbedMessage : options.deletable;
         this._message = options.message;
         this._timeoutMS = config_json_1.messageDeleteTimeout;
     }
