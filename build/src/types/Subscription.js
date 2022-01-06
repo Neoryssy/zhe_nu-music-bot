@@ -82,12 +82,10 @@ class Subscription {
     }
     async play(track) {
         try {
-            const info = await ytdl_core_1.default.getInfo(track.link);
-            const format = ytdl_core_1.default.chooseFormat(info.formats, {
-                quality: [91, 92, 93, 140],
-                filter: (f) => f.container === 'mp4' || f.container === 'ts',
-            });
-            this._resource = (0, voice_1.createAudioResource)(format.url, { inlineVolume: true });
+            const stream = (0, ytdl_core_1.default)(track.link);
+            this._resource = (0, voice_1.createAudioResource)(stream, { inlineVolume: true });
+            stream.pause();
+            setTimeout(() => stream.resume(), 5000);
             this._player.play(this._resource);
         }
         catch (e) {

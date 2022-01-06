@@ -111,10 +111,10 @@ class TrackQueue {
             this._position--;
         return this._list[this._position];
     }
-    remove(position) {
+    remove(position, deleteCount) {
         if (position < 0 || position > this._list.length - 1)
-            return;
-        this._list.splice(position, 1);
+            [];
+        return this._list.splice(position, deleteCount || 1);
     }
     unloop() {
         this._looped = false;

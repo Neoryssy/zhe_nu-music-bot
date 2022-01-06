@@ -29,6 +29,7 @@ const e = async ({ subscription, message }) => {
         descriptionElements.push(`[${subscription.queue.current.title}](${subscription.queue.current.link})  \`${leftDuration}\``);
     }
     if (queue.length === 0) {
+        descriptionElements.push('');
         descriptionElements.push('`Нет треков в очереди`');
         descriptionElements.push('');
         descriptionElements.push(`Чтобы добавить треки в очередь, воспользуйтесь командой \`${config_json_1.prefix}play<композиция>\``);
