@@ -7,7 +7,8 @@ import { messageDeleteTimeout } from '../../config.json';
 export const subscriptionPlayerListener = (s: Subscription) => {
   let timeout: NodeJS.Timeout;
 
-  s.player.on('stateChange', async (oldState, newState) => {
+  //@ts-ignore
+  s.player.on('unsubscribe', async (oldState, newState) => {
     if (oldState.status === AudioPlayerStatus.Idle && newState.status === AudioPlayerStatus.Buffering) {
       if (timeout) clearTimeout(timeout);
     }
