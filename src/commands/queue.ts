@@ -20,13 +20,13 @@ const e = async ({ subscription, message }: ExecuteOptions) => {
 
   embed.setTitle(`Треков в очереди (${queue.length})`);
   if (subscription!.queue.current) {
-    let leftDuration: string;
+    let leftDuration: string = "99";
 
-    if (subscription!.queue.current.lengthSeconds === 0) leftDuration = 'Live';
-    else
-      leftDuration = msToISO(
-        subscription!.queue.current.lengthSeconds * 1000 - subscription!.resource.playbackDuration
-      );
+    // if (subscription!.queue.current.lengthSeconds === 0) leftDuration = 'Live';
+    // else
+    //   leftDuration = msToISO(
+    //     subscription!.queue.current.lengthSeconds * 1000 - subscription!.resource.playbackDuration
+    //   );
 
     descriptionElements.push('**Сейчас играет**');
     descriptionElements.push(

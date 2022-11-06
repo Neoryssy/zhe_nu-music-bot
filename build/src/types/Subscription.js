@@ -87,7 +87,7 @@ class Subscription {
                 quality: [91, 92, 93, 140],
                 filter: (f) => f.container === 'mp4' || f.container === 'ts',
             });
-            this._resource = (0, voice_1.createAudioResource)(format.url, { inlineVolume: true });
+            this._resource = (0, voice_1.createAudioResource)(format.url);
             this._player.play(this._resource);
         }
         catch (e) {

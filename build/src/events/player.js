@@ -7,7 +7,7 @@ const MessageSender_1 = require("../utils/MessageSender");
 const config_json_1 = require("../../config.json");
 const subscriptionPlayerListener = (s) => {
     let timeout;
-    s.player.on('stateChange', async (oldState, newState) => {
+    s.player.on('unsubscribe', async (oldState, newState) => {
         if (oldState.status === voice_1.AudioPlayerStatus.Idle && newState.status === voice_1.AudioPlayerStatus.Buffering) {
             if (timeout)
                 clearTimeout(timeout);
