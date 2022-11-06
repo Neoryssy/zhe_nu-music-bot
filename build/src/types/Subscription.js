@@ -1,11 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Subscription = void 0;
 const voice_1 = require("@discordjs/voice");
-const ytdl_core_1 = __importDefault(require("ytdl-core"));
+const child_process_1 = require("child_process");
 const index_1 = require("../../index");
 const TrackQueue_1 = require("./TrackQueue");
 class Subscription {
@@ -30,9 +27,6 @@ class Subscription {
     }
     get player() {
         return this._player;
-    }
-    get resource() {
-        return this._resource;
     }
     get queue() {
         return this._queue;
@@ -82,13 +76,13 @@ class Subscription {
     }
     async play(track) {
         try {
-            const info = await ytdl_core_1.default.getInfo(track.link);
-            const format = ytdl_core_1.default.chooseFormat(info.formats, {
-                quality: [91, 92, 93, 140],
-                filter: (f) => f.container === 'mp4' || f.container === 'ts',
+            const child = (0, child_process_1.spawn)(`youtube-dl -f 251 ${track.link} -o - | ffmpeg -i pipe:0 -c:a libopus -f opus pipe:1`, {
+                shell: true
             });
-            this._resource = (0, voice_1.createAudioResource)(format.url);
-            this._player.play(this._resource);
+            const resource = (0, voice_1.createAudioResource)(child.stdout);
+            console.log(resource);
+            child.stderr.pipe(process.stdout);
+            this._player.play(resource);
         }
         catch (e) {
             console.log(e);

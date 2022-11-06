@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GuildCommand = exports.Command = void 0;
 const index_1 = require("../../index");
-const player_1 = require("../events/player");
+const SubscriptionEvents_1 = require("../events/SubscriptionEvents");
 const Subscription_1 = require("./Subscription");
 class Command {
     constructor(options) {
@@ -53,7 +53,7 @@ class GuildCommand extends Command {
             if (!subscription) {
                 index_1.client.subscriptions.set(guild.id, new Subscription_1.Subscription({ guild: guild, textChannel: message.channel }));
                 subscription = index_1.client.subscriptions.get(message.guildId);
-                (0, player_1.subscriptionPlayerListener)(subscription);
+                (0, SubscriptionEvents_1.subscriptionEvents)(subscription);
             }
             options.subscription = subscription;
         }
