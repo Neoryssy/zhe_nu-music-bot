@@ -1,6 +1,6 @@
 import { GuildMember, Message } from 'discord.js';
 import { client } from '../../index';
-import { subscriptionPlayerListener } from '../events/player';
+import { subscriptionEvents } from '../events/SubscriptionEvents';
 import { Subscription } from './Subscription';
 
 export interface ExecuteOptions {
@@ -91,7 +91,7 @@ export class GuildCommand extends Command {
       if (!subscription) {
         client.subscriptions.set(guild.id, new Subscription({ guild: guild, textChannel: message.channel }));
         subscription = client.subscriptions.get(message.guildId!);
-        subscriptionPlayerListener(subscription!);
+        subscriptionEvents(subscription!);
       }
 
       options.subscription = subscription;

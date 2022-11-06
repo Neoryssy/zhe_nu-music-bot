@@ -10,10 +10,9 @@ import {
   VoiceConnection,
   VoiceConnectionStatus,
 } from '@discordjs/voice';
+import { spawn } from 'child_process';
 import { Guild, MessageEmbed, Snowflake, TextBasedChannels } from 'discord.js';
 import { createWriteStream } from 'fs';
-import { pipeline } from 'stream';
-import ytdl from 'ytdl-core';
 import { client } from '../../index';
 import { MessageSender } from '../utils/MessageSender';
 import { Track, TrackQueue } from './TrackQueue';
@@ -44,20 +43,6 @@ export class Subscription {
     this._listeners = options.listeners || { connectionListener: null, playerListener: null };
 
     this._player = createAudioPlayer({ behaviors: { noSubscriber: NoSubscriberBehavior.Pause } });
-    this._player.on(AudioPlayerStatus.Idle, () => {
-      this.playNext();
-    });
-    this._player.on(AudioPlayerStatus.Playing, (oldState) => {
-      if (oldState.status === AudioPlayerStatus.Buffering) {
-        const embed = new MessageEmbed()
-          .setColor('BLUE')
-          .setThumbnail(this._queue.current!.thumbnail.url)
-          .addField('Сейчас играет', `[${this._queue.current!.title}](${this._queue.current!.link})`);
-
-        new MessageSender({ channel: this._channel, deletable: true, message: { embeds: [embed] } }).send();
-      }
-    });
-
     this._queue = new TrackQueue();
   }
 
@@ -134,21 +119,17 @@ export class Subscription {
 
   private async play(track: Track) {
     try {
-      const info = await ytdl.getInfo(track.link);
-      const format = ytdl.chooseFormat(info.formats, {
-        quality: [91, 92, 93, 140],
-        filter: (f) => f.container === 'mp4' || f.container === 'ts',
-      });
-      const stream = ytdl(track.link, { format });
-      const writeStream = createWriteStream('audio.mp4');
+      const child = spawn(
+        `youtube-dl -f 251 ${track.link} -o - | ffmpeg -i pipe:0 -c:a libopus -f opus pipe:1`,
+        {
+          shell: true
+        }
+      );
+      const resource = createAudioResource(child.stdout)
+      console.log(resource)
 
-      writeStream.on('ready', () => {
-        console.log('ready');
-        const resource = createAudioResource('audio.mp4');
-        this._player.play(resource);
-      });
-
-      stream.pipe(writeStream);
+      child.stderr.pipe(process.stdout);
+      this._player.play(resource)
     } catch (e) {
       console.log(e);
     }
