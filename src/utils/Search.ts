@@ -34,7 +34,6 @@ export class Search {
         playlistId: playlistId,
       };
 
-
       const playlistResponse = await youtube.playlists.list(playlistOptions);
       const playlistItemsResponse = await youtube.playlistItems.list(playlistItemsOptions);
 

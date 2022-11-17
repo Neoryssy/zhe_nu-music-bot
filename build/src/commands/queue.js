@@ -20,11 +20,7 @@ const e = async ({ subscription, message }) => {
     const descriptionElements = [];
     embed.setTitle(`Треков в очереди (${queue.length})`);
     if (subscription.queue.current) {
-        let leftDuration;
-        if (subscription.queue.current.lengthSeconds === 0)
-            leftDuration = 'Live';
-        else
-            leftDuration = msToISO(subscription.queue.current.lengthSeconds * 1000 - subscription.resource.playbackDuration);
+        let leftDuration = "99";
         descriptionElements.push('**Сейчас играет**');
         descriptionElements.push(`[${subscription.queue.current.title}](${subscription.queue.current.link})  \`${leftDuration}\``);
     }

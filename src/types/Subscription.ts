@@ -7,12 +7,17 @@ import {
   entersState,
   joinVoiceChannel,
   NoSubscriberBehavior,
+  StreamType,
   VoiceConnection,
   VoiceConnectionStatus,
 } from '@discordjs/voice';
-import { Guild, Snowflake, TextBasedChannels } from 'discord.js';
-import ytdl from 'ytdl-core';
+import { spawn } from 'child_process';
+import { Guild, MessageEmbed, Snowflake, TextBasedChannels } from 'discord.js';
+import { createWriteStream } from 'fs';
 import { client } from '../../index';
+import { Log } from '../utils/Log';
+import { MessageSender } from '../utils/MessageSender';
+import { AudioTransformer } from './AudioTransformer';
 import { Track, TrackQueue } from './TrackQueue';
 
 interface SubscriptionListeners {
@@ -33,13 +38,13 @@ export class Subscription {
   private _guild: Guild;
   private _listeners: SubscriptionListeners;
   private _player: AudioPlayer;
-  private _resource!: AudioResource;
   private _queue: TrackQueue;
 
   constructor(options: SubscriptionOptions) {
     this._channel = options.textChannel;
     this._guild = options.guild;
     this._listeners = options.listeners || { connectionListener: null, playerListener: null };
+
     this._player = createAudioPlayer({ behaviors: { noSubscriber: NoSubscriberBehavior.Pause } });
     this._queue = new TrackQueue();
   }
@@ -58,9 +63,6 @@ export class Subscription {
   }
   get player() {
     return this._player;
-  }
-  get resource() {
-    return this._resource;
   }
   get queue() {
     return this._queue;
@@ -120,16 +122,12 @@ export class Subscription {
 
   private async play(track: Track) {
     try {
-      const info = await ytdl.getInfo(track.link);
+      const stream = new AudioTransformer().getOpusStream(track.link)
+      const resource = createAudioResource(stream, { inputType: StreamType.OggOpus });
 
-      const format = ytdl.chooseFormat(info.formats, {
-        quality: [91, 92, 93, 140],
-        filter: (f) => f.container === 'mp4' || f.container === 'ts',
-      });
+      Log.write(`Playing ${track.link}`);
 
-      this._resource = createAudioResource(format.url, { inlineVolume: true });
-
-      this._player.play(this._resource);
+      this._player.play(resource);
     } catch (e) {
       console.log(e);
     }
@@ -137,9 +135,9 @@ export class Subscription {
 
   async playNext(position?: number) {
     try {
-      let track: Track | null
+      let track: Track | null;
 
-      if (position) track = this._queue.jump(position)
+      if (position) track = this._queue.jump(position);
       else track = this._queue.next();
 
       if (!track) {
