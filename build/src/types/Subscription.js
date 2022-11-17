@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Subscription = void 0;
 const voice_1 = require("@discordjs/voice");
-const child_process_1 = require("child_process");
 const index_1 = require("../../index");
+const Log_1 = require("../utils/Log");
+const AudioTransformer_1 = require("./AudioTransformer");
 const TrackQueue_1 = require("./TrackQueue");
 class Subscription {
     constructor(options) {
@@ -76,12 +77,9 @@ class Subscription {
     }
     async play(track) {
         try {
-            const child = (0, child_process_1.spawn)(`youtube-dl -f 251 ${track.link} -o - | ffmpeg -i pipe:0 -c:a libopus -f opus pipe:1`, {
-                shell: true
-            });
-            const resource = (0, voice_1.createAudioResource)(child.stdout);
-            console.log(resource);
-            child.stderr.pipe(process.stdout);
+            const stream = new AudioTransformer_1.AudioTransformer().getOpusStream(track.link);
+            const resource = (0, voice_1.createAudioResource)(stream, { inputType: voice_1.StreamType.OggOpus });
+            Log_1.Log.write(`Playing ${track.link}`);
             this._player.play(resource);
         }
         catch (e) {
