@@ -25,7 +25,7 @@ const e = async ({ args, message }) => {
     await new MessageSender_1.MessageSender({
         channel: message.channel,
         deletable: true,
-        message: { content: 'Выбор композиции', components: [row] }
+        message: { content: 'Выбор композиции', components: [row] },
     }).send();
 };
 module.exports = new Command_1.GuildCommand({
