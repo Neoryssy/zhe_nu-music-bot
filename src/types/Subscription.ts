@@ -7,6 +7,7 @@ import {
   entersState,
   joinVoiceChannel,
   NoSubscriberBehavior,
+  StreamType,
   VoiceConnection,
   VoiceConnectionStatus,
 } from '@discordjs/voice';
@@ -14,7 +15,9 @@ import { spawn } from 'child_process';
 import { Guild, MessageEmbed, Snowflake, TextBasedChannels } from 'discord.js';
 import { createWriteStream } from 'fs';
 import { client } from '../../index';
+import { Log } from '../utils/Log';
 import { MessageSender } from '../utils/MessageSender';
+import { AudioTransformer } from './AudioTransformer';
 import { Track, TrackQueue } from './TrackQueue';
 
 interface SubscriptionListeners {
@@ -119,17 +122,12 @@ export class Subscription {
 
   private async play(track: Track) {
     try {
-      const child = spawn(
-        `youtube-dl -f 251 ${track.link} -o - | ffmpeg -i pipe:0 -c:a libopus -f opus pipe:1`,
-        {
-          shell: true
-        }
-      );
-      const resource = createAudioResource(child.stdout)
-      console.log(resource)
+      const stream = new AudioTransformer().getOpusStream(track.link)
+      const resource = createAudioResource(stream, { inputType: StreamType.OggOpus });
 
-      child.stderr.pipe(process.stdout);
-      this._player.play(resource)
+      Log.write(`Playing ${track.link}`);
+
+      this._player.play(resource);
     } catch (e) {
       console.log(e);
     }

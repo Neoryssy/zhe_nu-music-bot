@@ -24,4 +24,3 @@ module.exports = new GuildCommand({
   e,
   name: 'resume',
 });
-

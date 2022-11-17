@@ -8,7 +8,7 @@ export const subscriptionEvents = (sub: Subscription) => {
   let timeout: NodeJS.Timeout;
 
   sub.player.on(AudioPlayerStatus.AutoPaused, (oldState, newState) => {
-    console.log(`OldState: ${oldState.status}, NewState ${newState.status}\n`)
+    console.log(`OldState: ${oldState.status}, NewState ${newState.status}\n`);
 
     timeout = setTimeout(() => {
       sub.destroy();
@@ -16,11 +16,11 @@ export const subscriptionEvents = (sub: Subscription) => {
   });
 
   sub.player.on(AudioPlayerStatus.Buffering, (oldState, newState) => {
-    console.log(`OldState: ${oldState.status}, NewState ${newState.status}\n`)
-  })
+    console.log(`OldState: ${oldState.status}, NewState ${newState.status}\n`);
+  });
 
   sub.player.on(AudioPlayerStatus.Idle, (oldState, newState) => {
-    console.log(`OldState: ${oldState.status}, NewState ${newState.status}\n`)
+    console.log(`OldState: ${oldState.status}, NewState ${newState.status}\n`);
     sub.playNext();
 
     timeout = setTimeout(() => {
@@ -29,13 +29,13 @@ export const subscriptionEvents = (sub: Subscription) => {
   });
 
   sub.player.on(AudioPlayerStatus.Paused, (oldState, newState) => {
-    console.log(`OldState: ${oldState.status}, NewState ${newState.status}\n`)
-  })
+    console.log(`OldState: ${oldState.status}, NewState ${newState.status}\n`);
+  });
 
   sub.player.on(AudioPlayerStatus.Playing, (oldState, newState) => {
-    console.log(`OldState: ${oldState.status}, NewState ${newState.status}\n`)
+    console.log(`OldState: ${oldState.status}, NewState ${newState.status}\n`);
 
-    clearTimeout(timeout)
+    clearTimeout(timeout);
     if (oldState.status === AudioPlayerStatus.Buffering) {
       const embed = new MessageEmbed()
         .setColor('BLUE')

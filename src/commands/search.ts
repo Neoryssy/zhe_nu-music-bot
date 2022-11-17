@@ -26,7 +26,7 @@ const e = async ({ args, message }: ExecuteOptions) => {
   await new MessageSender({
     channel: message.channel,
     deletable: true,
-    message: { content: 'Выбор композиции', components: [row] }
+    message: { content: 'Выбор композиции', components: [row] },
   }).send();
 };
 

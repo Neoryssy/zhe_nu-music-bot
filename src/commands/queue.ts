@@ -20,7 +20,7 @@ const e = async ({ subscription, message }: ExecuteOptions) => {
 
   embed.setTitle(`Треков в очереди (${queue.length})`);
   if (subscription!.queue.current) {
-    let leftDuration: string = "99";
+    let leftDuration: string = '99';
 
     // if (subscription!.queue.current.lengthSeconds === 0) leftDuration = 'Live';
     // else

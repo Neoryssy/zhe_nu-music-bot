@@ -4,5 +4,6 @@ build/config.json
 node_modules
 tokens
 audio.mp4
+Log.txt
 
 

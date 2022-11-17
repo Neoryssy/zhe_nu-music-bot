@@ -6,7 +6,9 @@ const e = async ({ subscription }: ExecuteOptions) => {
   subscription!.player.stop();
   subscription!.queue.clear();
 
-  const embed = new MessageEmbed().setColor('BLUE').setDescription('Воспроизведение остановлено, очередь и история очищена');
+  const embed = new MessageEmbed()
+    .setColor('BLUE')
+    .setDescription('Воспроизведение остановлено, очередь и история очищена');
   new MessageSender({ channel: subscription!.channel, message: { embeds: [embed] } }).send();
 };
 

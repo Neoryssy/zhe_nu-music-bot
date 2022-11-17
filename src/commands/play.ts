@@ -7,7 +7,7 @@ import { MessageSender } from '../utils/MessageSender';
 const e = async ({ args, subscription, message, member }: ExecuteOptions) => {
   try {
     const channelId = member?.voice.channelId || message.member?.voice.channelId;
-    const embed = new MessageEmbed().setColor('BLUE')
+    const embed = new MessageEmbed().setColor('BLUE');
     const searchResult = await Search.search(args!.join(' '));
     const item = searchResult[0];
 
