@@ -14,7 +14,7 @@ export class AudioTransformer {
   }
 
   getRawStream(url: string): Readable {
-    const ytdl = spawn('youtube-dl', ['-f', '251', url, '-o', '-']);
+    const ytdl = spawn('console_apps/yt-dlp', ['-f', '251', url, '-o', '-']);
 
     ytdl.stderr.on('data', (chunk: Buffer) => {
       Log.writeConsole(`Youtube-dl: ${chunk.toString()}`);
