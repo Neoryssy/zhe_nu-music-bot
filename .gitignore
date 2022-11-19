@@ -2,6 +2,7 @@
 config.json
 build/config.json
 node_modules
+package-lock.json
 tokens
 audio.mp4
 Log.txt
