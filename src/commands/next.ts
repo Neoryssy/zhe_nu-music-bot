@@ -1,9 +1,7 @@
 import { ExecuteOptions, GuildCommand } from '../types/Command';
 
 const e = async ({ args, subscription, message }: ExecuteOptions) => {
-  //subscription!.playNext(+args![0]);
-
-  message.reply('Команда временно отключена из-за неправильной работы');
+  subscription!.playNext(+args![0]);
 };
 
 module.exports = new GuildCommand({

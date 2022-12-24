@@ -3,8 +3,7 @@ import { ExecuteOptions, GuildCommand } from '../types/Command';
 import { MessageSender } from '../utils/MessageSender';
 
 const e = async ({ subscription }: ExecuteOptions) => {
-  subscription!.player.stop();
-  subscription!.queue.clear();
+  subscription?.stop();
 
   const embed = new MessageEmbed()
     .setColor('BLUE')

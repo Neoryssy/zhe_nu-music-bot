@@ -114,5 +114,14 @@ class Subscription {
             console.log(e);
         }
     }
+    stop() {
+        try {
+            this._player.stop();
+            this._queue.clear();
+        }
+        catch (e) {
+            console.log(`Stop error: ${e}`);
+        }
+    }
 }
 exports.Subscription = Subscription;

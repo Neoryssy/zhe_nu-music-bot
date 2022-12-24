@@ -15,6 +15,10 @@ class AudioTransformer {
         ytdl.stderr.on('data', (chunk) => {
             Log_1.Log.writeConsole(`Youtube-dl: ${chunk.toString()}`);
         });
+        ytdl.stdout.on('error', () => {
+            console.log('error');
+            ytdl.kill();
+        });
         return ytdl.stdout;
     }
     convertToOpus(rawStream) {
@@ -23,6 +27,9 @@ class AudioTransformer {
             Log_1.Log.writeConsole(`FFmpeg: ${chunk.toString()}`);
         });
         rawStream.pipe(ffmpeg.stdin);
+        ffmpeg.stdin.on('error', () => {
+            ffmpeg.kill();
+        });
         return ffmpeg.stdout;
     }
 }

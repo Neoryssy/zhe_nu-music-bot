@@ -4,8 +4,7 @@ const discord_js_1 = require("discord.js");
 const Command_1 = require("../types/Command");
 const MessageSender_1 = require("../utils/MessageSender");
 const e = async ({ subscription }) => {
-    subscription.player.stop();
-    subscription.queue.clear();
+    subscription?.stop();
     const embed = new discord_js_1.MessageEmbed()
         .setColor('BLUE')
         .setDescription('Воспроизведение остановлено, очередь и история очищена');

@@ -1,4 +1,3 @@
-import { createAudioResource, StreamType } from '@discordjs/voice';
 import { spawn } from 'child_process';
 import { Readable } from 'stream';
 import { Log } from '../utils/Log';
@@ -20,6 +19,11 @@ export class AudioTransformer {
       Log.writeConsole(`Youtube-dl: ${chunk.toString()}`);
     });
 
+    ytdl.stdout.on('error', () => {
+      console.log('error');
+      ytdl.kill();
+    });
+
     return ytdl.stdout;
   }
 
@@ -31,6 +35,10 @@ export class AudioTransformer {
     });
 
     rawStream.pipe(ffmpeg.stdin);
+
+    ffmpeg.stdin.on('error', () => {
+      ffmpeg.kill();
+    });
 
     return ffmpeg.stdout;
   }

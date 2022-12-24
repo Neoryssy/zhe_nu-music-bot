@@ -1,26 +1,24 @@
-import { thumbnail } from 'ytdl-core';
-
-export type loopType = 'track' | 'queue';
+export type Thumbnail = { height?: number | undefined; url: string; width?: number | undefined };
 
 export interface PlaylistOptions {
   items: Track[];
   link: string;
   title: string;
-  thumbnail: thumbnail;
+  thumbnail: Thumbnail;
 }
 
 export interface TrackOptions {
   lengthSeconds: number;
   link: string;
   title: string;
-  thumbnail: thumbnail;
+  thumbnail: Thumbnail;
 }
 
 export class Playlist {
   private _items: Track[];
   private readonly _link: string;
   private readonly _title: string;
-  private readonly _thumbnail: thumbnail;
+  private readonly _thumbnail: Thumbnail;
 
   constructor(options: PlaylistOptions) {
     this._items = options.items;
@@ -47,7 +45,7 @@ export class Track {
   private readonly _lengthSeconds: number;
   private readonly _link: string;
   private readonly _title: string;
-  private readonly _thumbnail: thumbnail;
+  private readonly _thumbnail: Thumbnail;
 
   constructor(options: TrackOptions) {
     this._lengthSeconds = options.lengthSeconds;
@@ -136,7 +134,7 @@ export class TrackQueue {
   previous(): Track | null {
     if (this._position - 1 < 0) return null;
 
-    if (this._looped) return this.current
+    if (this._looped) return this.current;
     else this._position--;
 
     return this._list[this._position];

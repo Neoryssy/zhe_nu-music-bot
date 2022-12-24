@@ -36,7 +36,7 @@ export const subscriptionEvents = (sub: Subscription) => {
     console.log(`OldState: ${oldState.status}, NewState ${newState.status}\n`);
 
     clearTimeout(timeout);
-    if (oldState.status === AudioPlayerStatus.Buffering) {
+    if (oldState.status === AudioPlayerStatus.Buffering) { // TODO:
       const embed = new MessageEmbed()
         .setColor('BLUE')
         .setThumbnail(sub.queue.current!.thumbnail.url)

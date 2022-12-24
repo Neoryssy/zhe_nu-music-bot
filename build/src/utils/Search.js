@@ -5,7 +5,7 @@ exports.Search = exports.validateYouTubeURL = exports.nullFilter = void 0;
 const googleapis_1 = require("googleapis");
 const url_1 = require("url");
 const TrackQueue_1 = require("../types/TrackQueue");
-const VideoInfo_1 = require("../types/VideoInfo/VideoInfo");
+const SourceInfo_1 = require("../types/SourceInfo/SourceInfo");
 const youtube = googleapis_1.google.youtube({ version: 'v3', auth: process.env.GOOGLE_API_KEY });
 const nullFilter = (a) => {
     return a.filter((e) => !!e);
@@ -44,9 +44,9 @@ Search.fetchPlaylist = async (playlistId) => {
         const playlistResponse = await youtube.playlists.list(playlistOptions);
         const playlistItemsResponse = await youtube.playlistItems.list(playlistItemsOptions);
         if (playlistResponse.statusText !== 'OK' || !playlistResponse.data.items)
-            return null;
+            return undefined;
         if (playlistItemsResponse.statusText !== 'OK' || !playlistItemsResponse.data.items)
-            return null;
+            return undefined;
         const items = await Promise.all(playlistItemsResponse.data.items.map(async ({ contentDetails }) => {
             return _a.fetchVideo(contentDetails.videoId);
         }));
@@ -59,22 +59,27 @@ Search.fetchPlaylist = async (playlistId) => {
         return new TrackQueue_1.Playlist(options);
     }
     catch (e) {
-        return null;
+        console.log(`Fetch playlist error: ${e}`);
+        return undefined;
     }
 };
 Search.fetchVideo = async (videoId) => {
     try {
-        const videoDetails = new VideoInfo_1.VideoInfo(videoId).getInfo();
+        const videoInfo = await new SourceInfo_1.SourceInfo(videoId, 'YouTube').getInfo();
+        if (!videoInfo)
+            return undefined;
+        const { id, contentDetails, snippet } = videoInfo;
         const options = {
-            lengthSeconds: +videoDetails.lengthSeconds,
-            link: `https://www.youtube.com/watch?v=${videoDetails.videoId}`,
-            title: videoDetails.title,
-            thumbnail: videoDetails.thumbnails[1],
+            lengthSeconds: Number(contentDetails.duration),
+            link: `https://www.youtube.com/watch?v=${id}`,
+            title: snippet.title,
+            thumbnail: snippet.thumbnails.default,
         };
         return new TrackQueue_1.Track(options);
     }
     catch (e) {
-        return null;
+        console.log(`Fetch video error: ${e}`);
+        return undefined;
     }
 };
 Search.search = async (q) => {
@@ -110,7 +115,7 @@ Search.searchByURL = async (q) => {
     const url = new url_1.URL(q);
     const listId = url.searchParams.get('list');
     const videoId = url.searchParams.get('v');
-    let item = null;
+    let item = undefined;
     if (listId)
         item = await _a.fetchPlaylist(listId);
     else if (videoId)
