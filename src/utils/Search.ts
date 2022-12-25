@@ -2,6 +2,7 @@ import { google, youtube_v3 } from 'googleapis';
 import { URL } from 'url';
 import { Playlist, TrackOptions, Track, PlaylistOptions } from '../types/TrackQueue/TrackQueue';
 import { SourceInfo } from '../types/SourceInfo/SourceInfo';
+import moment from 'moment';
 
 const youtube = google.youtube({ version: 'v3', auth: process.env.GOOGLE_API_KEY });
 
@@ -66,8 +67,9 @@ export class Search {
       if (!videoInfo) return undefined;
 
       const { id, contentDetails, snippet } = videoInfo;
+      const duration = moment.duration(contentDetails!.duration!)
       const options: TrackOptions = {
-        lengthSeconds: Number(contentDetails!.duration!),
+        lengthSeconds: duration.asSeconds(),
         link: `https://www.youtube.com/watch?v=${id}`,
         title: snippet!.title!,
         //@ts-ignore

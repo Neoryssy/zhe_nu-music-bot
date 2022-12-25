@@ -1,28 +1,22 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const Command_1 = require("../types/Command/Command");
 const config_json_1 = require("../../config.json");
-const msToISO = (t) => {
-    let iso;
-    const hour = 3600000;
-    if (t < 0)
-        iso = '0:00';
-    else if (t < hour)
-        iso = new Date(t).toISOString().substr(14, 5);
-    else if (t >= hour)
-        iso = new Date(t).toISOString().substr(11, 8);
-    return iso;
-};
+const moment_1 = __importDefault(require("moment"));
 const e = async ({ subscription, message }) => {
     const queue = [...subscription.queue.queue];
     const embed = new discord_js_1.MessageEmbed().setColor('BLUE');
     const descriptionElements = [];
     embed.setTitle(`Треков в очереди (${queue.length})`);
     if (subscription.queue.current) {
-        let leftDuration = '99';
+        const lengthSeconds = subscription.queue.current.lengthSeconds;
+        const duration = lengthSeconds === 0 ? 'Live' : moment_1.default.unix(lengthSeconds).utc().format('HH:mm:ss');
         descriptionElements.push('**Сейчас играет**');
-        descriptionElements.push(`[${subscription.queue.current.title}](${subscription.queue.current.link})  \`${leftDuration}\``);
+        descriptionElements.push(`[${subscription.queue.current.title}](${subscription.queue.current.link})  \`${duration}\``);
     }
     if (queue.length === 0) {
         descriptionElements.push('');
@@ -36,12 +30,9 @@ const e = async ({ subscription, message }) => {
         queue.forEach((t, i) => {
             if (i >= 10)
                 return;
-            let leftDuration;
-            if (t.lengthSeconds === 0)
-                leftDuration = 'Live';
-            else
-                leftDuration = msToISO(t.lengthSeconds * 1000);
-            descriptionElements.push(`\`${i + 1}\` [${t.title}](${t.link}) \`${leftDuration}\``);
+            const lengthSeconds = t.lengthSeconds;
+            const duration = lengthSeconds === 0 ? 'Live' : moment_1.default.unix(lengthSeconds).utc().format('HH:mm:ss');
+            descriptionElements.push(`\`${i + 1}\` [${t.title}](${t.link}) \`${duration}\``);
         });
     }
     embed.setDescription(descriptionElements.join('\n'));

@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Search = exports.validateYouTubeURL = exports.nullFilter = void 0;
@@ -6,6 +9,7 @@ const googleapis_1 = require("googleapis");
 const url_1 = require("url");
 const TrackQueue_1 = require("../types/TrackQueue/TrackQueue");
 const SourceInfo_1 = require("../types/SourceInfo/SourceInfo");
+const moment_1 = __importDefault(require("moment"));
 const youtube = googleapis_1.google.youtube({ version: 'v3', auth: process.env.GOOGLE_API_KEY });
 const nullFilter = (a) => {
     return a.filter((e) => !!e);
@@ -69,8 +73,9 @@ Search.fetchVideo = async (videoId) => {
         if (!videoInfo)
             return undefined;
         const { id, contentDetails, snippet } = videoInfo;
+        const duration = moment_1.default.duration(contentDetails.duration);
         const options = {
-            lengthSeconds: Number(contentDetails.duration),
+            lengthSeconds: duration.asSeconds(),
             link: `https://www.youtube.com/watch?v=${id}`,
             title: snippet.title,
             thumbnail: snippet.thumbnails.default,
