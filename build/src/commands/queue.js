@@ -16,7 +16,7 @@ const e = async ({ subscription, message }) => {
         const lengthSeconds = subscription.queue.current.lengthSeconds;
         const duration = lengthSeconds === 0 ? 'Live' : moment_1.default.unix(lengthSeconds).utc().format('HH:mm:ss');
         descriptionElements.push('**Сейчас играет**');
-        descriptionElements.push(`[${subscription.queue.current.title}](${subscription.queue.current.link})  \`${leftDuration}\``);
+        descriptionElements.push(`[${subscription.queue.current.title}](${subscription.queue.current.link})  \`${duration}\``);
     }
     if (queue.length === 0) {
         descriptionElements.push('');
