@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
-const Command_1 = require("../types/Command");
-const MessageSender_1 = require("../utils/MessageSender");
+const Command_1 = require("../types/Command/Command");
+const MessageSender_1 = require("../types/MessageSender/MessageSender");
 const Search_1 = require("../utils/Search");
-const TrackQueue_1 = require("../types/TrackQueue");
+const TrackQueue_1 = require("../types/TrackQueue/TrackQueue");
 const e = async ({ args, message }) => {
     const searchResult = await Search_1.Search.search(args.join(' '));
     const row = new discord_js_1.MessageActionRow();

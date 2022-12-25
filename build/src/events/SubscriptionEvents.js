@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.subscriptionEvents = void 0;
 const voice_1 = require("@discordjs/voice");
 const discord_js_1 = require("discord.js");
-const MessageSender_1 = require("../utils/MessageSender");
+const MessageSender_1 = require("../types/MessageSender/MessageSender");
 const config_json_1 = require("../../config.json");
 const subscriptionEvents = (sub) => {
     let timeout;

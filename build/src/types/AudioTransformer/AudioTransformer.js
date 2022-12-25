@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AudioTransformer = void 0;
 const child_process_1 = require("child_process");
-const Log_1 = require("../utils/Log");
+const Log_1 = require("../../utils/Log");
 class AudioTransformer {
     constructor() { }
     getOpusStream(url) {

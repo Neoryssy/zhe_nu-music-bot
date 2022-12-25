@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MessageSender = void 0;
-const config_json_1 = require("../../config.json");
+const config_json_1 = require("../../../config.json");
 class MessageSender {
     constructor(options) {
         this._channel = options.channel;

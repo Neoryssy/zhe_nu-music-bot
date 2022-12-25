@@ -1,8 +1,8 @@
 import { MessageEmbed } from 'discord.js';
-import { ExecuteOptions, GuildCommand } from '../types/Command';
+import { ExecuteOptions, GuildCommand } from '../types/Command/Command';
 import { Search } from '../utils/Search';
-import { Playlist, Track } from '../types/TrackQueue';
-import { MessageSender } from '../utils/MessageSender';
+import { Playlist, Track } from '../types/TrackQueue/TrackQueue';
+import { MessageSender } from '../types/MessageSender/MessageSender';
 
 const e = async ({ args, subscription, message, member }: ExecuteOptions) => {
   try {

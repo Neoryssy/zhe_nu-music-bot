@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
-const Command_1 = require("../types/Command");
-const MessageSender_1 = require("../utils/MessageSender");
+const Command_1 = require("../types/Command/Command");
+const MessageSender_1 = require("../types/MessageSender/MessageSender");
 const e = async ({ args, subscription, message }) => {
     const start = Number(args[0]);
     const count = Number(args[1]);

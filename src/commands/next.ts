@@ -1,4 +1,4 @@
-import { ExecuteOptions, GuildCommand } from '../types/Command';
+import { ExecuteOptions, GuildCommand } from '../types/Command/Command';
 
 const e = async ({ args, subscription, message }: ExecuteOptions) => {
   subscription!.playNext(+args![0]);

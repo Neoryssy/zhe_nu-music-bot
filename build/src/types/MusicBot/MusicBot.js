@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MusicBot = void 0;
 const fs_1 = __importDefault(require("fs"));
 const discord_js_1 = require("discord.js");
-const index_1 = require("../../index");
+const index_1 = require("../../../index");
 const path_1 = __importDefault(require("path"));
 class MusicBot extends discord_js_1.Client {
     constructor(options) {
@@ -14,11 +14,12 @@ class MusicBot extends discord_js_1.Client {
         this._commands = new Map();
         this._subscriptions = new Map();
         const ext = process.env.NODE_ENV === 'development' ? '.ts' : '.js';
+        const commandsPath = path_1.default.join(index_1.rootDir, 'src/commands/');
         const commandFiles = fs_1.default
-            .readdirSync(path_1.default.join(index_1.rootDir, 'src/commands/'))
+            .readdirSync(commandsPath)
             .filter((file) => file.endsWith(ext));
         for (const file of commandFiles) {
-            const command = require(`../commands/${file}`);
+            const command = require(path_1.default.join(commandsPath, file));
             this._commands.set(command.name, command);
         }
     }

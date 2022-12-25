@@ -1,6 +1,6 @@
 import { spawn } from 'child_process';
 import { Readable } from 'stream';
-import { Log } from '../utils/Log';
+import { Log } from '../../utils/Log';
 
 export class AudioTransformer {
   constructor() {}

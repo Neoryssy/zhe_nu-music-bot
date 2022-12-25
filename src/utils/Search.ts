@@ -1,6 +1,6 @@
 import { google, youtube_v3 } from 'googleapis';
 import { URL } from 'url';
-import { Playlist, TrackOptions, Track, PlaylistOptions } from '../types/TrackQueue';
+import { Playlist, TrackOptions, Track, PlaylistOptions } from '../types/TrackQueue/TrackQueue';
 import { SourceInfo } from '../types/SourceInfo/SourceInfo';
 
 const youtube = google.youtube({ version: 'v3', auth: process.env.GOOGLE_API_KEY });
@@ -55,7 +55,7 @@ export class Search {
 
       return new Playlist(options);
     } catch (e) {
-      console.log(`Fetch playlist error: ${e}`)
+      console.log(`Fetch playlist error: ${e}`);
       return undefined;
     }
   };
@@ -76,7 +76,7 @@ export class Search {
 
       return new Track(options);
     } catch (e) {
-      console.log(`Fetch video error: ${e}`)
+      console.log(`Fetch video error: ${e}`);
       return undefined;
     }
   };

@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { ExecuteOptions, GuildCommand } from '../types/Command';
+import { ExecuteOptions, GuildCommand } from '../types/Command/Command';
 import { prefix } from '../../config.json';
 
 const msToISO = (t: number) => {

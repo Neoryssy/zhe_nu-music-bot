@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Subscription = void 0;
 const voice_1 = require("@discordjs/voice");
-const index_1 = require("../../index");
-const Log_1 = require("../utils/Log");
-const AudioTransformer_1 = require("./AudioTransformer");
-const TrackQueue_1 = require("./TrackQueue");
+const index_1 = require("../../../index");
+const Log_1 = require("../../utils/Log");
+const AudioTransformer_1 = require("../AudioTransformer/AudioTransformer");
+const TrackQueue_1 = require("../TrackQueue/TrackQueue");
 class Subscription {
     constructor(options) {
         this._channel = options.textChannel;

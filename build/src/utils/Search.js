@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Search = exports.validateYouTubeURL = exports.nullFilter = void 0;
 const googleapis_1 = require("googleapis");
 const url_1 = require("url");
-const TrackQueue_1 = require("../types/TrackQueue");
+const TrackQueue_1 = require("../types/TrackQueue/TrackQueue");
 const SourceInfo_1 = require("../types/SourceInfo/SourceInfo");
 const youtube = googleapis_1.google.youtube({ version: 'v3', auth: process.env.GOOGLE_API_KEY });
 const nullFilter = (a) => {

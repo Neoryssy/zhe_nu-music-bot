@@ -11,10 +11,10 @@ import {
   VoiceConnectionStatus,
 } from '@discordjs/voice';
 import { Guild, Snowflake, TextBasedChannels } from 'discord.js';
-import { client } from '../../index';
-import { Log } from '../utils/Log';
-import { AudioTransformer } from './AudioTransformer';
-import { Track, TrackQueue } from './TrackQueue';
+import { client } from '../../../index';
+import { Log } from '../../utils/Log';
+import { AudioTransformer } from '../AudioTransformer/AudioTransformer';
+import { Track, TrackQueue } from '../TrackQueue/TrackQueue';
 
 interface SubscriptionListeners {
   connectionListener?: Function | null;
