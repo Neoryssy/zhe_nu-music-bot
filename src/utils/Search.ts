@@ -1,7 +1,8 @@
 import { google, youtube_v3 } from 'googleapis';
 import { URL } from 'url';
-import ytdl from 'ytdl-core';
-import { Playlist, TrackOptions, Track, PlaylistOptions } from '../types/TrackQueue';
+import { Playlist, TrackOptions, Track, PlaylistOptions } from '../types/TrackQueue/TrackQueue';
+import { SourceInfo } from '../types/SourceInfo/SourceInfo';
+import moment from 'moment';
 
 const youtube = google.youtube({ version: 'v3', auth: process.env.GOOGLE_API_KEY });
 
@@ -21,7 +22,7 @@ export const validateYouTubeURL = (s: string): boolean => {
 };
 
 export class Search {
-  static fetchPlaylist = async (playlistId: string): Promise<Playlist | null> => {
+  static fetchPlaylist = async (playlistId: string): Promise<Playlist | undefined> => {
     try {
       const playlistOptions: youtube_v3.Params$Resource$Playlists$List = {
         maxResults: 1,
@@ -37,8 +38,8 @@ export class Search {
       const playlistResponse = await youtube.playlists.list(playlistOptions);
       const playlistItemsResponse = await youtube.playlistItems.list(playlistItemsOptions);
 
-      if (playlistResponse.statusText !== 'OK' || !playlistResponse.data.items) return null;
-      if (playlistItemsResponse.statusText !== 'OK' || !playlistItemsResponse.data.items) return null;
+      if (playlistResponse.statusText !== 'OK' || !playlistResponse.data.items) return undefined;
+      if (playlistItemsResponse.statusText !== 'OK' || !playlistItemsResponse.data.items) return undefined;
 
       const items = await Promise.all(
         playlistItemsResponse.data.items!.map(async ({ contentDetails }) => {
@@ -55,23 +56,30 @@ export class Search {
 
       return new Playlist(options);
     } catch (e) {
-      return null;
+      console.log(`Fetch playlist error: ${e}`);
+      return undefined;
     }
   };
 
-  static fetchVideo = async (videoId: string): Promise<Track | null> => {
+  static fetchVideo = async (videoId: string): Promise<Track | undefined> => {
     try {
-      const { videoDetails } = await ytdl.getBasicInfo(videoId);
+      const videoInfo = await new SourceInfo(videoId, 'YouTube').getInfo();
+      if (!videoInfo) return undefined;
+
+      const { id, contentDetails, snippet } = videoInfo;
+      const duration = moment.duration(contentDetails!.duration!)
       const options: TrackOptions = {
-        lengthSeconds: +videoDetails.lengthSeconds,
-        link: `https://www.youtube.com/watch?v=${videoDetails.videoId}`,
-        title: videoDetails.title,
-        thumbnail: videoDetails.thumbnails[1],
+        lengthSeconds: duration.asSeconds(),
+        link: `https://www.youtube.com/watch?v=${id}`,
+        title: snippet!.title!,
+        //@ts-ignore
+        thumbnail: snippet!.thumbnails!.default!,
       };
 
       return new Track(options);
     } catch (e) {
-      return null;
+      console.log(`Fetch video error: ${e}`);
+      return undefined;
     }
   };
 
@@ -113,7 +121,7 @@ export class Search {
     const listId = url.searchParams.get('list');
     const videoId = url.searchParams.get('v');
 
-    let item: Track | Playlist | null = null;
+    let item: Track | Playlist | undefined = undefined;
 
     if (listId) item = await this.fetchPlaylist(listId);
     else if (videoId) item = await this.fetchVideo(videoId);

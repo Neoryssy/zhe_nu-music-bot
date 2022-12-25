@@ -4,7 +4,7 @@ exports.client = exports.rootDir = void 0;
 const dotenv = require('dotenv').config();
 const discord_js_1 = require("discord.js");
 const client_1 = require("./src/events/client");
-const MusicBot_1 = require("./src/types/MusicBot");
+const MusicBot_1 = require("./src/types/MusicBot/MusicBot");
 if (!process.env.DISCORD_TOKEN)
     throw new Error('Not provided .env variable DISCORD_TOKEN');
 if (!process.env.GOOGLE_API_KEY)

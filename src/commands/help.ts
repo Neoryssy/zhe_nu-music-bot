@@ -1,6 +1,6 @@
 import { MessageEmbed } from 'discord.js';
 import { client } from '../../index';
-import { ExecuteOptions, GuildCommand } from '../types/Command';
+import { ExecuteOptions, GuildCommand } from '../types/Command/Command';
 import { prefix } from '../../config.json';
 
 const e = ({ message }: ExecuteOptions) => {

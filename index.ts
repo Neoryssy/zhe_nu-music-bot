@@ -1,7 +1,7 @@
 const dotenv = require('dotenv').config();
 import { Intents } from 'discord.js';
 import { clientEvents } from './src/events/client';
-import { MusicBot } from './src/types/MusicBot';
+import { MusicBot } from './src/types/MusicBot/MusicBot';
 
 if (!process.env.DISCORD_TOKEN) throw new Error('Not provided .env variable DISCORD_TOKEN');
 if (!process.env.GOOGLE_API_KEY) throw new Error('Not provided .env variable GOOGLE_API_KEY');

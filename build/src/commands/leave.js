@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Command_1 = require("../types/Command");
+const Command_1 = require("../types/Command/Command");
 const e = async ({ subscription }) => {
     if (!subscription.connection)
         return;

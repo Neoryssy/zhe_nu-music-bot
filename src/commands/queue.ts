@@ -1,17 +1,7 @@
 import { MessageEmbed } from 'discord.js';
-import { ExecuteOptions, GuildCommand } from '../types/Command';
+import { ExecuteOptions, GuildCommand } from '../types/Command/Command';
 import { prefix } from '../../config.json';
-
-const msToISO = (t: number) => {
-  let iso: string;
-  const hour = 3600_000;
-
-  if (t < 0) iso = '0:00';
-  else if (t < hour) iso = new Date(t).toISOString().substr(14, 5);
-  else if (t >= hour) iso = new Date(t).toISOString().substr(11, 8);
-
-  return iso!;
-};
+import moment from 'moment';
 
 const e = async ({ subscription, message }: ExecuteOptions) => {
   const queue = [...subscription!.queue.queue];
@@ -20,17 +10,12 @@ const e = async ({ subscription, message }: ExecuteOptions) => {
 
   embed.setTitle(`Треков в очереди (${queue.length})`);
   if (subscription!.queue.current) {
-    let leftDuration: string = '99';
-
-    // if (subscription!.queue.current.lengthSeconds === 0) leftDuration = 'Live';
-    // else
-    //   leftDuration = msToISO(
-    //     subscription!.queue.current.lengthSeconds * 1000 - subscription!.resource.playbackDuration
-    //   );
+    const lengthSeconds = subscription!.queue.current.lengthSeconds;
+    const duration = lengthSeconds === 0 ? 'Live' : moment.unix(lengthSeconds).utc().format('HH:mm:ss');
 
     descriptionElements.push('**Сейчас играет**');
     descriptionElements.push(
-      `[${subscription!.queue.current.title}](${subscription!.queue.current.link})  \`${leftDuration}\``
+      `[${subscription!.queue.current.title}](${subscription!.queue.current.link})  \`${duration}\``
     );
   }
 
@@ -48,12 +33,10 @@ const e = async ({ subscription, message }: ExecuteOptions) => {
     queue.forEach((t, i) => {
       if (i >= 10) return;
 
-      let leftDuration: string;
+      const lengthSeconds = t.lengthSeconds;
+      const duration = lengthSeconds === 0 ? 'Live' : moment.unix(lengthSeconds).utc().format('HH:mm:ss');
 
-      if (t.lengthSeconds === 0) leftDuration = 'Live';
-      else leftDuration = msToISO(t.lengthSeconds * 1000);
-
-      descriptionElements.push(`\`${i + 1}\` [${t.title}](${t.link}) \`${leftDuration}\``);
+      descriptionElements.push(`\`${i + 1}\` [${t.title}](${t.link}) \`${duration}\``);
     });
   }
 

@@ -1,6 +1,6 @@
 import { MessageSelectMenu, MessageActionRow, Message } from 'discord.js';
-import { ExecuteOptions } from '../types/Command';
-import { MusicBot } from '../types/MusicBot';
+import { ExecuteOptions } from '../types/Command/Command';
+import { MusicBot } from '../types/MusicBot/MusicBot';
 import { prefix } from '../../config.json';
 
 export const clientEvents = (client: MusicBot) => {
