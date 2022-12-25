@@ -11,7 +11,7 @@ class AudioTransformer {
         return opusStream;
     }
     getRawStream(url) {
-        const ytdl = (0, child_process_1.spawn)('console_apps/yt-dlp', ['-f', '251', url, '-o', '-']);
+        const ytdl = (0, child_process_1.spawn)('yt-dlp', ['-f', '251', url, '-o', '-']);
         ytdl.stderr.on('data', (chunk) => {
             Log_1.Log.writeConsole(`Youtube-dl: ${chunk.toString()}`);
         });
