@@ -1,5 +1,5 @@
 import { MessageOptions, TextBasedChannels } from 'discord.js';
-import { deleteEmbedMessage, messageDeleteTimeout } from '../../config.json';
+import { deleteEmbedMessage, messageDeleteTimeout } from '../../../config.json';
 
 interface MessageSenderOptions {
   message: MessageOptions;

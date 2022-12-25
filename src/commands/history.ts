@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { ExecuteOptions, GuildCommand } from '../types/Command';
+import { ExecuteOptions, GuildCommand } from '../types/Command/Command';
 
 const e = async ({ subscription, message }: ExecuteOptions) => {
   const history = [...subscription!.queue.history];

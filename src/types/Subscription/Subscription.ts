@@ -1,7 +1,6 @@
 import {
   AudioPlayer,
   AudioPlayerStatus,
-  AudioResource,
   createAudioPlayer,
   createAudioResource,
   entersState,
@@ -11,14 +10,11 @@ import {
   VoiceConnection,
   VoiceConnectionStatus,
 } from '@discordjs/voice';
-import { spawn } from 'child_process';
-import { Guild, MessageEmbed, Snowflake, TextBasedChannels } from 'discord.js';
-import { createWriteStream } from 'fs';
-import { client } from '../../index';
-import { Log } from '../utils/Log';
-import { MessageSender } from '../utils/MessageSender';
-import { AudioTransformer } from './AudioTransformer';
-import { Track, TrackQueue } from './TrackQueue';
+import { Guild, Snowflake, TextBasedChannels } from 'discord.js';
+import { client } from '../../../index';
+import { Log } from '../../utils/Log';
+import { AudioTransformer } from '../AudioTransformer/AudioTransformer';
+import { Track, TrackQueue } from '../TrackQueue/TrackQueue';
 
 interface SubscriptionListeners {
   connectionListener?: Function | null;
@@ -122,7 +118,7 @@ export class Subscription {
 
   private async play(track: Track) {
     try {
-      const stream = new AudioTransformer().getOpusStream(track.link)
+      const stream = new AudioTransformer().getOpusStream(track.link);
       const resource = createAudioResource(stream, { inputType: StreamType.OggOpus });
 
       Log.write(`Playing ${track.link}`);
@@ -160,6 +156,15 @@ export class Subscription {
       this.play(track);
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  stop() {
+    try {
+      this._player.stop();
+      this._queue.clear();
+    } catch (e) {
+      console.log(`Stop error: ${e}`);
     }
   }
 }

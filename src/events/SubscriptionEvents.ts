@@ -1,7 +1,7 @@
 import { AudioPlayerStatus } from '@discordjs/voice';
 import { MessageEmbed } from 'discord.js';
-import { MessageSender } from '../utils/MessageSender';
-import { Subscription } from '../types/Subscription';
+import { MessageSender } from '../types/MessageSender/MessageSender';
+import { Subscription } from '../types/Subscription/Subscription';
 import { channelLeaveTimeout } from '../../config.json';
 
 export const subscriptionEvents = (sub: Subscription) => {
@@ -37,6 +37,7 @@ export const subscriptionEvents = (sub: Subscription) => {
 
     clearTimeout(timeout);
     if (oldState.status === AudioPlayerStatus.Buffering) {
+      // TODO:
       const embed = new MessageEmbed()
         .setColor('BLUE')
         .setThumbnail(sub.queue.current!.thumbnail.url)

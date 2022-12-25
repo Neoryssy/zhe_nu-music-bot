@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
-const Command_1 = require("../types/Command");
+const Command_1 = require("../types/Command/Command");
 const Search_1 = require("../utils/Search");
-const TrackQueue_1 = require("../types/TrackQueue");
-const MessageSender_1 = require("../utils/MessageSender");
+const TrackQueue_1 = require("../types/TrackQueue/TrackQueue");
+const MessageSender_1 = require("../types/MessageSender/MessageSender");
 const e = async ({ args, subscription, message, member }) => {
     try {
         const channelId = member?.voice.channelId || message.member?.voice.channelId;

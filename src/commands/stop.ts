@@ -1,10 +1,9 @@
 import { MessageEmbed } from 'discord.js';
-import { ExecuteOptions, GuildCommand } from '../types/Command';
-import { MessageSender } from '../utils/MessageSender';
+import { ExecuteOptions, GuildCommand } from '../types/Command/Command';
+import { MessageSender } from '../types/MessageSender/MessageSender';
 
 const e = async ({ subscription }: ExecuteOptions) => {
-  subscription!.player.stop();
-  subscription!.queue.clear();
+  subscription?.stop();
 
   const embed = new MessageEmbed()
     .setColor('BLUE')

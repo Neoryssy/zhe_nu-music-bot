@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
-const Command_1 = require("../types/Command");
+const Command_1 = require("../types/Command/Command");
 const e = async ({ subscription, message }) => {
     const history = [...subscription.queue.history];
     const embed = new discord_js_1.MessageEmbed().setColor('BLUE');

@@ -1,4 +1,4 @@
-import { ExecuteOptions, GuildCommand } from '../types/Command';
+import { ExecuteOptions, GuildCommand } from '../types/Command/Command';
 
 const e = async ({ subscription }: ExecuteOptions) => {
   if (!subscription!.connection) return;

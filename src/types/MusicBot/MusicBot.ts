@@ -1,9 +1,9 @@
 import fs from 'fs';
 import { Client, ClientOptions, Message, Snowflake } from 'discord.js';
-import { Subscription } from './Subscription';
-import { rootDir } from '../../index';
+import { Subscription } from '../Subscription/Subscription';
+import { rootDir } from '../../../index';
 import path from 'path';
-import { GuildCommand } from './Command';
+import { GuildCommand } from '../Command/Command';
 
 export class MusicBot extends Client {
   private _commands = new Map<Snowflake, GuildCommand>();
@@ -13,12 +13,13 @@ export class MusicBot extends Client {
     super(options);
 
     const ext = process.env.NODE_ENV === 'development' ? '.ts' : '.js';
+    const commandsPath = path.join(rootDir, 'src/commands/')
     const commandFiles = fs
-      .readdirSync(path.join(rootDir, 'src/commands/'))
+      .readdirSync(commandsPath)
       .filter((file) => file.endsWith(ext));
 
     for (const file of commandFiles) {
-      const command: GuildCommand = require(`../commands/${file}`);
+      const command: GuildCommand = require(path.join(commandsPath, file));
       this._commands.set(command.name, command);
     }
   }

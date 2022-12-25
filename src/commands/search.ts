@@ -1,8 +1,8 @@
 import { MessageActionRow, MessageSelectMenu } from 'discord.js';
-import { ExecuteOptions, GuildCommand } from '../types/Command';
-import { MessageSender } from '../utils/MessageSender';
+import { ExecuteOptions, GuildCommand } from '../types/Command/Command';
+import { MessageSender } from '../types/MessageSender/MessageSender';
 import { Search } from '../utils/Search';
-import { Track } from '../types/TrackQueue';
+import { Track } from '../types/TrackQueue/TrackQueue';
 
 const e = async ({ args, message }: ExecuteOptions) => {
   const searchResult = await Search.search(args!.join(' '));

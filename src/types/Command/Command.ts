@@ -1,7 +1,7 @@
 import { GuildMember, Message } from 'discord.js';
-import { client } from '../../index';
-import { subscriptionEvents } from '../events/SubscriptionEvents';
-import { Subscription } from './Subscription';
+import { client } from '../../../index';
+import { subscriptionEvents } from '../../events/SubscriptionEvents';
+import { Subscription } from '../Subscription/Subscription';
 
 export interface ExecuteOptions {
   args?: string[];

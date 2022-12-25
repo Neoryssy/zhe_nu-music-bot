@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GuildCommand = exports.Command = void 0;
-const index_1 = require("../../index");
-const SubscriptionEvents_1 = require("../events/SubscriptionEvents");
-const Subscription_1 = require("./Subscription");
+const index_1 = require("../../../index");
+const SubscriptionEvents_1 = require("../../events/SubscriptionEvents");
+const Subscription_1 = require("../Subscription/Subscription");
 class Command {
     constructor(options) {
         this._aliases = [options.name];
