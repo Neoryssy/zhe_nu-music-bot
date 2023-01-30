@@ -141,9 +141,9 @@ export class TrackQueue {
   }
 
   remove(position: number, deleteCount?: number) {
-    if (position < 0 || position > this._list.length - 1) [];
+    if (position < 0 || position > this._list.length - 1) return;
 
-    return this._list.splice(position, deleteCount || 1);
+    return this._list.splice(this._position + position, deleteCount || 1);
   }
 
   unloop() {
