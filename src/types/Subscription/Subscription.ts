@@ -159,6 +159,10 @@ export class Subscription {
     }
   }
 
+  shuffle() {
+    this._queue.shuffle()
+  }
+
   stop() {
     try {
       this._player.stop();

@@ -1,3 +1,5 @@
+import { Random } from '../../utils/Random';
+
 export type Thumbnail = { height?: number | undefined; url: string; width?: number | undefined };
 
 export interface PlaylistOptions {
@@ -144,6 +146,19 @@ export class TrackQueue {
     if (position < 0 || position > this._list.length - 1) [];
 
     return this._list.splice(position, deleteCount || 1);
+  }
+
+  shuffle() {
+    if (this._list.length === 0) return;
+
+    const list = this._list.splice(this._position + 1);
+
+    while (list.length > 0) {
+      const pos = Random.getRandomInt(0, list.length - 1);
+      const track = list.splice(pos, 1)[0];
+
+      this._list.push(track);
+    }
   }
 
   unloop() {
