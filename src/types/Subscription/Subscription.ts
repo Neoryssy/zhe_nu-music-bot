@@ -110,6 +110,20 @@ export class Subscription {
       });
       this._connection.subscribe(this._player);
 
+      //@ts-ignore
+      this._connection.on('stateChange', (oldState, newState) => {
+        const oldNetworking = Reflect.get(oldState, 'networking');
+        const newNetworking = Reflect.get(newState, 'networking');
+      
+        const networkStateChangeHandler = (oldNetworkState: any, newNetworkState: any) => {
+          const newUdp = Reflect.get(newNetworkState, 'udp');
+          clearInterval(newUdp?.keepAliveInterval);
+        }
+      
+        oldNetworking?.off('stateChange', networkStateChangeHandler);
+        newNetworking?.on('stateChange', networkStateChangeHandler);
+      });
+
       await entersState(this._connection, VoiceConnectionStatus.Ready, 5_000);
     } catch (e) {
       console.log(e);
@@ -157,6 +171,10 @@ export class Subscription {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  shuffle() {
+    this._queue.shuffle()
   }
 
   stop() {
