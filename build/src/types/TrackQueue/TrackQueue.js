@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TrackQueue = exports.Track = exports.Playlist = void 0;
+const Random_1 = require("../../utils/Random");
 class Playlist {
     constructor(options) {
         this._items = options.items;
@@ -113,8 +114,18 @@ class TrackQueue {
     }
     remove(position, deleteCount) {
         if (position < 0 || position > this._list.length - 1)
-            [];
-        return this._list.splice(position, deleteCount || 1);
+            return;
+        return this._list.splice(this._position + position, deleteCount || 1);
+    }
+    shuffle() {
+        if (this._list.length === 0)
+            return;
+        const list = this._list.splice(this._position + 1);
+        while (list.length > 0) {
+            const pos = Random_1.Random.getRandomInt(0, list.length - 1);
+            const track = list.splice(pos, 1)[0];
+            this._list.push(track);
+        }
     }
     unloop() {
         this._looped = false;

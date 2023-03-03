@@ -9,11 +9,13 @@ const e = async ({ args, subscription, message }) => {
     const embed = new discord_js_1.MessageEmbed().setColor('BLUE');
     const descriptionElements = [];
     if (isNaN(start))
-        embed.setDescription('Позиция для удаления указана неверно');
+        embed.setDescription('Неверный формат номера');
     else {
         const tracks = subscription.queue.remove(+args[0], Number.isNaN(count) ? 1 : count);
-        if (tracks.length === 0)
-            embed.setDescription('Нет треков для удаления');
+        if (tracks === undefined)
+            embed.setDescription('Нет треков с таким номером в очереди');
+        else if (tracks.length === 0)
+            embed.setDescription('Нет трека для удаления');
         else {
             embed.setTitle(`Треков удалено (${tracks.length})`);
             tracks.forEach((t, i) => {
