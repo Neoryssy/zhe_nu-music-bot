@@ -11,20 +11,27 @@ const e = async ({ args, subscription, message, member }) => {
         const embed = new discord_js_1.MessageEmbed().setColor('BLUE');
         const searchResult = await Search_1.Search.search(args.join(' '));
         const item = searchResult[0];
+        let playing = true;
         if (!channelId) {
-            console.log('Voice channel id not provided');
-            return;
+            playing = false;
+            embed.setTitle('Для воспроизведения необходимо находитьcя в голосовом канале');
         }
-        subscription.joinChannel(channelId);
-        if (item instanceof TrackQueue_1.Track) {
-            await subscription.addAndPlayTrack(item);
-            embed.addField('Трек добавлен в очередь', `[${item.title}](${item.link})`);
+        if (!item) {
+            playing = false;
+            embed.setTitle('По запросу ничего не найдено');
         }
-        if (item instanceof TrackQueue_1.Playlist) {
-            await subscription.addAndPlayTrack(item.items);
-            embed.addField('Плейлист добавлен в очередь', `[${item.title}](${item.link})`);
+        if (playing) {
+            subscription.joinChannel(channelId);
+            if (item instanceof TrackQueue_1.Track) {
+                await subscription.addAndPlayTrack(item);
+                embed.addField('Трек добавлен в очередь', `[${item.title}](${item.link})`);
+            }
+            if (item instanceof TrackQueue_1.Playlist) {
+                await subscription.addAndPlayTrack(item.items);
+                embed.addField('Плейлист добавлен в очередь', `[${item.title}](${item.link})`);
+            }
+            embed.setThumbnail(item.thumbnail.url);
         }
-        embed.setThumbnail(item.thumbnail.url);
         new MessageSender_1.MessageSender({
             channel: subscription.channel,
             deletable: true,

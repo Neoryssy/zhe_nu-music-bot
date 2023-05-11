@@ -10,24 +10,31 @@ const e = async ({ args, subscription, message, member }: ExecuteOptions) => {
     const embed = new MessageEmbed().setColor('BLUE');
     const searchResult = await Search.search(args!.join(' '));
     const item = searchResult[0];
+    let playing = true;
 
     if (!channelId) {
-      console.log('Voice channel id not provided');
-      return;
+      playing = false;
+      embed.setTitle('Для воспроизведения необходимо находитьcя в голосовом канале');
+    }
+    if (!item) {
+      playing = false;
+      embed.setTitle('По запросу ничего не найдено');
     }
 
-    subscription!.joinChannel(channelId);
+    if (playing) {
+      subscription!.joinChannel(channelId!);
 
-    if (item instanceof Track) {
-      await subscription!.addAndPlayTrack(item);
-      embed.addField('Трек добавлен в очередь', `[${item!.title}](${item!.link})`);
-    }
-    if (item instanceof Playlist) {
-      await subscription!.addAndPlayTrack(item.items);
-      embed.addField('Плейлист добавлен в очередь', `[${item!.title}](${item!.link})`);
-    }
+      if (item instanceof Track) {
+        await subscription!.addAndPlayTrack(item);
+        embed.addField('Трек добавлен в очередь', `[${item!.title}](${item!.link})`);
+      }
+      if (item instanceof Playlist) {
+        await subscription!.addAndPlayTrack(item.items);
+        embed.addField('Плейлист добавлен в очередь', `[${item!.title}](${item!.link})`);
+      }
 
-    embed.setThumbnail(item.thumbnail.url);
+      embed.setThumbnail(item.thumbnail.url);
+    }
 
     new MessageSender({
       channel: subscription!.channel,
